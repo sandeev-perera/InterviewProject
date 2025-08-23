@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -15,8 +16,21 @@ class AdminController extends Controller
         return view('admin.Admindashboard', compact('users', 'posts'));
     }
 
-    public function showProductsPage(){
-        return view('admin.ManageProducts');
+    public function showProductsPage(Request $request){
+        $search = trim($request->input('search'));
+        $posts = Post::query()
+            ->select(['id','title','image_path','category','user_id'])
+            ->with(['user:id,name'])
+            ->when($search, function ($q) use ($search) {
+                $q->where(function ($sub) use ($search) {
+                    $sub->where('title', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->paginate(12)
+            ->withQueryString();    
+
+    return view('admin.ManageProducts', compact('posts', 'search'));
     }
 
     public function viewProfiles(){
@@ -32,7 +46,6 @@ class AdminController extends Controller
     ->groupBy('users.id','users.name','users.email','users.created_at')
     ->orderBy('posts_count', 'desc')
     ->paginate(20);   
-    Log::info($painters);          
     return view('admin.ManageUsers', compact('painters'));  
     }
 }

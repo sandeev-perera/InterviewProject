@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Post;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -16,9 +17,15 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         //admin with admin@gmail.com with password set to 123456
-        $this->call(
-             adminSeeder::class
+        $this->call([
+            adminSeeder::class,
+            CustomerSeeder::class
+        ]
+
+             
         );
+
+        Post::factory(20)->create();
 
         // User::factory()->create([
         //     'name' => 'Test User',

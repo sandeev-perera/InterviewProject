@@ -1,8 +1,26 @@
-@extends("layouts.app")
-@section('title', "Product Management")
-@section('content')
+@extends('layouts.app')
 
-<div class="">
-        <h1>Crud Operations goes here</h1>
+@section('title', 'Manage Posts')
+
+@section('content')
+<div class="max-w-7xl mx-auto p-6">
+        <x-search-box action="{{ route('show.admin.products') }}" placeholder="Search painters..." name="search" />
+  <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    @forelse ($posts as $post)
+     <x-product-card 
+    title="{{$post->title}}" 
+    author="{{$post->user->name}}" 
+    category="{{$post->category}}"
+    image="{{ asset('storage/'. $post->image_path) }}"
+    link="{{$post->id}}" 
+/>
+     @empty
+      <p class="text-gray-500">No posts yet.</p>
+    @endforelse
+  </section>
+
+   <div class="mt-6">
+        {{ $posts->links() }}
+    </div>
 </div>
 @endsection

@@ -59,7 +59,7 @@
   />
 
   <x-card-button
-    href=""
+    href="{{route('show.admin.products')}}"
     hover="Manage Posts"
     icon="images/icons/manage-posts.svg"
     borderClass="border-2 border-dotted border-emerald-400"

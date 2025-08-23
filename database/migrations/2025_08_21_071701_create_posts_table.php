@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string("title");
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->string("image_path");
-            $table->enum("category", ["Educational", "Authentic", "General"]);
+            $table->enum("category", ["Educational", "Authentic", "General", "History"]);
             $table->integer("painted_year");
-            $table->string("description");
+            $table->longText("description");
             $table->timestamps();
         });
     }

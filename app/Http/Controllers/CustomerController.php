@@ -9,11 +9,6 @@ use Ramsey\Uuid\Type\Integer;
 
 class CustomerController extends Controller
 {
-    public function showCustomerProducts(){
-        $CustomerID = Auth::user()->id;
-        return view('customer.myProducts');
-    }
-
     public function showCustomerDashboard(){
         $CustomerID = Auth::user()->id;
         $posts = Post::where('user_id', $CustomerID)->paginate(12);

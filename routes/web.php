@@ -18,7 +18,7 @@ Route::controller(PostsController::class)->group(function(){
 Route::prefix("/admin")->middleware(['auth', 'verified','role:Admin'])->group(function(){
     Route::get("/dashboard", [AdminController::class, 'showAdminDashboard'])->name('admin.dashboard');
     Route::get("/manageProducts", [AdminController::class, "showProductsPage"])->name("show.admin.products");
-    Route::get("/manageProducts", [AdminController::class, "viewProfiles"])->name("show.users");
+    Route::get("/manageUsers", [AdminController::class, "viewProfiles"])->name("show.users");
 });
 
 Route::prefix("/customer")->middleware(['auth', 'verified', 'role:Customer'])->group(function(){

@@ -29,7 +29,7 @@
                         <td class="px-6 py-3 text-sm font-medium text-gray-900">{{ $painter->name }}</td>
                         <td class="px-6 py-3 text-sm text-gray-600">{{ $painter->email }}</td>
                         <td class="px-6 py-3 text-sm text-gray-500">
-                            {{ $painter->created_at->format('M d, Y') }}
+                            {{ $painter->created_at?->format('M d, Y') }}
                         </td>
                         <td class="px-6 py-3 text-sm font-semibold text-emerald-600">
                             {{ $painter->posts_count }}

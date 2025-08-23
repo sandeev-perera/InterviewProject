@@ -17,5 +17,8 @@
       <p class="text-gray-500">No posts for this category yet..</p>
     @endforelse
   </section>
+  <div class="mt-6">
+        {{ $posts->links() }}
+    </div>
 </div>
 @endsection
