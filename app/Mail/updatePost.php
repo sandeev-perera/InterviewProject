@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class DeletePostmail extends Mailable
+class updatePost extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -17,12 +17,10 @@ class DeletePostmail extends Mailable
      * Create a new message instance.
      */
 
-    public $title; 
-
+    public $title;
     public function __construct(String $title)
     {
         $this->title = $title;
-
     }
 
     /**
@@ -31,7 +29,7 @@ class DeletePostmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Delete Post Notifier',
+            subject: 'Post Update Notifier',
         );
     }
 
@@ -41,7 +39,7 @@ class DeletePostmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.delete-post-mail',
+            view: 'mail.update-post-mail',
         );
     }
 

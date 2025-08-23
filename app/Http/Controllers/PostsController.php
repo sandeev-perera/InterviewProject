@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\DeletePostmail;
+use App\Mail\updatePost;
 use App\Models\Post;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
@@ -156,7 +159,6 @@ class PostsController extends Controller
     {
         $data = $request->validate($this->validationRules(isUpdateRequest: true), $this->validationMessages());
         try {
-
             $newPath = null;
             if ($request->hasFile('photo')) {
                 // Delete old image if exist
@@ -165,6 +167,7 @@ class PostsController extends Controller
                 }
                 $newPath = $request->file('photo')->store('uploads/Images', 'public');
             }
+
             // Store new image
             $post->update([
                 "title" => $data["title"],
@@ -178,6 +181,8 @@ class PostsController extends Controller
             if (Auth::user()->role === "Customer") {
                 return $this->redirectWithSuccess('customer.dashboard', "Your post successfully updated");
             } else {
+                Mail::to($post->user->email)->send(new updatePost($post->title));
+
                 return $this->redirectWithSuccess('admin.dashboard', "Post successfully updated");
             }
         } catch (Exception $e) {
@@ -190,16 +195,14 @@ class PostsController extends Controller
      */
     public function destroy(Post $post)
     {
-
-        Log::info("delete method starts");
-        Log::info($post);
-
+        $title = $post->title;
+        $email = $post->user->email;
         $isAdmin = Auth::user()->role === "Admin" ? true : false;
         $deleted = $post->delete();
 
         if ($deleted)
             if ($isAdmin) {
-                //Send email
+                Mail::to($email)->send(new DeletePostmail($title));
                 return redirect()->route('admin.dashboard')
                     ->with('success', 'Post deleted successfully. Email Sent');
             }
