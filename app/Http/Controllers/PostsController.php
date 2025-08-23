@@ -63,7 +63,7 @@ class PostsController extends Controller
                 'required',
                 'string',
                 'max:20',
-                Rule::in(['Educational', 'Authentic', 'General']),
+                Rule::in(['Educational', 'Authentic', 'General', "History"]),
             ],
             'year' => 'required|integer|min:1500|max:' . now()->year,
             'description' => 'string|required|max:10000'

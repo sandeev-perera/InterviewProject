@@ -52,7 +52,7 @@
         id="category"
         name="category"
         class="mt-1 block w-full rounded-lg border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('category') border-red-500 @enderror">
-        @php $cats = ['Educational','Authentic','General']; @endphp
+        @php $cats = ['Educational','Authentic','General', "History"]; @endphp
         <option value="" disabled {{ old('category', $post->category) ? '' : 'selected' }}>Select a category</option>
         @foreach ($cats as $cat)
           <option value="{{ $cat }}" {{ old('category', $post->category) === $cat ? 'selected' : '' }}>

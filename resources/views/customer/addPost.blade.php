@@ -44,7 +44,7 @@
                 <select id="category" name="category"
                     class="mt-1 block w-full rounded-lg border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 @error('category') border-red-500 @enderror">
                     <option value="" disabled {{ old('category') ? '' : 'selected' }}>Select a category</option>
-                    @foreach (['Educational', 'Authentic', 'General'] as $cat)
+                    @foreach (['Educational', 'Authentic', 'General', "History"] as $cat)
                         <option value="{{ $cat }}" {{ old('category') === $cat ? 'selected' : '' }}>
                             {{ $cat }}
                         </option>
