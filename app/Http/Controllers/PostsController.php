@@ -113,9 +113,6 @@ class PostsController extends Controller
             $imagepath = $this->getfilepath($image, "Images");
             $data['photo'] = $imagepath;
         }
-
-        Log::info($data);
-        Log::info(Auth::user()->id);
         try {
             Post::create([
                 "title" => $data["title"],
@@ -128,6 +125,7 @@ class PostsController extends Controller
             $this->storeFile($image, 'Images', $imagepath);
             return $this->redirectWithSuccess('customer.dashboard', "Your post successfully uploaded");
         } catch (Exception $e) {
+            Log::info("Error while storing occored". $e);
             return $this->redirectWithError('show.addPost', "Something went wrong");
         }
     }
