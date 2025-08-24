@@ -35,7 +35,7 @@
                             {{ $painter->posts_count }}
                         </td>
                         <td class="px-6 py-3 text-sm text-right">
-                            <a href=""
+                            <a href="{{route('show.customer.profile', ["id" => $painter->id])}}"
                                class="text-emerald-600 hover:text-emerald-800 font-medium">
                                 View
                             </a>

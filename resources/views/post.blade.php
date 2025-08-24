@@ -21,7 +21,7 @@
         <div class="flex flex-col gap-6">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900">{{ $post->title }}</h1>
-                <p class="text-gray-500 mt-1">By {{ $post->user->name ?? 'Unknown' }}</p>
+                <p class="text-gray-500 mt-1">By <a class="text-blue-400" href="{{route('show.customer.profile', ['id'=>$post->user_id])}}">{{ $post->user->name}}</a></p>
             </div>
 
             <!-- Category & Year -->
@@ -42,25 +42,25 @@
 
             <!-- Actions -->
             <div class="flex gap-4 mt-4">
-                @if(Auth::check())
-                    @if(Auth::id() === $post->user_id || Auth::user()->role === 'Admin')
-                        <a href="{{route('show.edit.post', $post->id)}}" 
-                        class="px-5 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">
-                            Edit Post
-                        </a>
-                        <!-- Delete Button -->
-            <form action="{{ route('delete.post', $post->id) }}" method="POST" 
-                  onsubmit="return confirm('Are you sure you want to delete this post?');">
-                @csrf
-                @method('DELETE')
-                <button type="submit" 
-                        class="px-5 py-2 bg-red-700 text-white rounded-lg hover:bg-red-600 transition">
-                    Delete Post
-                </button>
-            </form>                  
-                    @endif
-                @endif
-            </div>
+  @can('update', $post)
+    <a href="{{ route('show.edit.post', $post) }}"
+       class="px-5 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">
+      Edit Post
+    </a>
+  @endcan
+
+  @can('delete', $post)
+    <form action="{{ route('delete.post', $post) }}" method="POST"
+          onsubmit="return confirm('Are you sure you want to delete this post?');" class="inline">
+      @csrf
+      @method('DELETE')
+      <button type="submit"
+              class="px-5 py-2 bg-red-700 text-white rounded-lg hover:bg-red-600 transition">
+        Delete Post
+      </button>
+    </form>
+  @endcan
+</div>
         </div>
     </div>
 

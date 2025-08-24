@@ -1,7 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Mail\DeletePostmail;
 use App\Mail\updatePost;
 use App\Models\Post;
@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
-use function Pest\Laravel\post;
 
 class PostsController extends Controller
 {
@@ -43,12 +42,6 @@ class PostsController extends Controller
             ->withQueryString();
         return view('category', compact("posts"));
     }
-
-    public function showSinglePost(Post $post)
-    {
-
-    }
-
 
     public function showAddPost()
     {
@@ -100,13 +93,15 @@ class PostsController extends Controller
 
     public function create()
     {
-
+        //
     }
 
 
 
     public function store(Request $request)
     {
+        $this->authorize("create");
+
         $data = $request->validate($this->validationRules(), $this->validationMessages());
         if ($request->hasFile('photo')) {
             $image = $request->file("photo");
@@ -155,6 +150,7 @@ class PostsController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        $this->authorize("update", $post);
         $data = $request->validate($this->validationRules(isUpdateRequest: true), $this->validationMessages());
         try {
             $newPath = null;
@@ -179,9 +175,9 @@ class PostsController extends Controller
             if (Auth::user()->role === "Customer") {
                 return $this->redirectWithSuccess('customer.dashboard', "Your post successfully updated");
             } else {
+                //Send email to notify the owner
                 Mail::to($post->user->email)->send(new updatePost($post->title));
-
-                return $this->redirectWithSuccess('admin.dashboard', "Post successfully updated");
+                return $this->redirectWithSuccess('admin.dashboard', "Post successfully updated. Email Sent");
             }
         } catch (Exception $e) {
             Log::info('update request error occured ' . $e);
@@ -193,6 +189,7 @@ class PostsController extends Controller
      */
     public function destroy(Post $post)
     {
+        $this->authorize('delete' ,$post);
         $title = $post->title;
         $email = $post->user->email;
         $isAdmin = Auth::user()->role === "Admin" ? true : false;
@@ -200,6 +197,7 @@ class PostsController extends Controller
 
         if ($deleted)
             if ($isAdmin) {
+                //Send email to notify the owner
                 Mail::to($email)->send(new DeletePostmail($title));
                 return redirect()->route('admin.dashboard')
                     ->with('success', 'Post deleted successfully. Email Sent');
