@@ -11,7 +11,7 @@ class AdminController extends Controller
 {
     public function showAdminDashboard(){
         $posts = Post::count();
-        $users = User::where('role', "customer" )->count();
+        $users = User::where('role', "Customer" )->count();
         return view('admin.Admindashboard', compact('users', 'posts'));
     }
 

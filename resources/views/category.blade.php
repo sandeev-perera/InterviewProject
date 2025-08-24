@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Home')
+@section('title', $category)
 
 @section('content')
 <div class="max-w-7xl mx-auto p-6">

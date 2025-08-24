@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Log;
 
 class PostPolicy
 {
@@ -29,7 +30,8 @@ class PostPolicy
      */
     public function create(User $user): bool
     {
-        return $user->id === "Customer";
+        Log::info("Policy::create called for user {$user->id}");
+        return $user->role === "Customer";
     }
 
     /**

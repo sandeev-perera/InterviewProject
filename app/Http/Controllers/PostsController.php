@@ -40,7 +40,7 @@ class PostsController extends Controller
             ->latest()
             ->paginate(12)
             ->withQueryString();
-        return view('category', compact("posts"));
+        return view('category', compact("posts", 'category'));
     }
 
     public function showAddPost()
@@ -100,7 +100,10 @@ class PostsController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize("create");
+        Log::info("this runs");
+        $this->authorize("create",Post::class);
+        Log::info("this runs too");
+
 
         $data = $request->validate($this->validationRules(), $this->validationMessages());
         if ($request->hasFile('photo')) {
